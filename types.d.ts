@@ -17,18 +17,18 @@ declare class CachedInputFileSystem {
 	readdir: {
 		(
 			arg0: string,
-			arg1: FileSystemCallback<(string | Buffer)[] | (FileSystemDirent)[]>
+			arg1: FileSystemCallback<(string | Buffer)[] | FileSystemDirent[]>
 		): void;
 		(
 			arg0: string,
 			arg1: any,
-			arg2: FileSystemCallback<(string | Buffer)[] | (FileSystemDirent)[]>
+			arg2: FileSystemCallback<(string | Buffer)[] | FileSystemDirent[]>
 		): void;
 	};
 	readdirSync: (
 		arg0: string,
 		arg1?: any
-	) => (string | Buffer)[] | (FileSystemDirent)[];
+	) => (string | Buffer)[] | FileSystemDirent[];
 	readFile: {
 		(arg0: string, arg1: FileSystemCallback<string | Buffer>): void;
 		(arg0: string, arg1: any, arg2: FileSystemCallback<string | Buffer>): void;
@@ -60,12 +60,12 @@ declare interface FileSystem {
 	readdir: {
 		(
 			arg0: string,
-			arg1: FileSystemCallback<(string | Buffer)[] | (FileSystemDirent)[]>
+			arg1: FileSystemCallback<(string | Buffer)[] | FileSystemDirent[]>
 		): void;
 		(
 			arg0: string,
 			arg1: any,
-			arg2: FileSystemCallback<(string | Buffer)[] | (FileSystemDirent)[]>
+			arg2: FileSystemCallback<(string | Buffer)[] | FileSystemDirent[]>
 		): void;
 	};
 	readJson?:
@@ -148,12 +148,12 @@ declare interface ResolveContext {
 	log?: undefined | ((arg0: string) => void);
 }
 declare interface ResolveOptions {
-	alias: ({
-		alias: string | false | (string)[];
+	alias: {
+		alias: string | false | string[];
 		name: string;
 		onlyModule?: undefined | boolean;
-	})[];
-	aliasFields: Set<string | (string)[]>;
+	}[];
+	aliasFields: Set<string | string[]>;
 	cachePredicate: (arg0: ResolveRequest) => boolean;
 	cacheWithContext: boolean;
 
@@ -161,20 +161,21 @@ declare interface ResolveOptions {
 	 * A list of exports field condition names.
 	 */
 	conditionNames: Set<string>;
-	descriptionFiles: (string)[];
+	descriptionFiles: string[];
 	enforceExtension: boolean;
-	exportsFields: Set<string | (string)[]>;
+	exportsFields: Set<string | string[]>;
 	extensions: Set<string>;
 	fileSystem: FileSystem;
 	unsafeCache: any;
 	symlinks: boolean;
 	resolver?: undefined | Resolver;
-	modules: (string | (string)[])[];
-	mainFields: ({ name: (string)[]; forceRelative: boolean })[];
+	modules: (string | string[])[];
+	mainFields: { name: string[]; forceRelative: boolean }[];
 	mainFiles: Set<string>;
 	plugins: (
 		| { apply: (arg0: Resolver) => void }
-		| ((this: Resolver, arg1: Resolver) => void))[];
+		| ((this: Resolver, arg1: Resolver) => void)
+	)[];
 	pnpApi: null | PnpApiImpl;
 	roots: Set<string>;
 	resolveToContext: boolean;
@@ -267,17 +268,17 @@ declare interface UserResolveOptions {
 	 */
 	alias?:
 		| undefined
-		| { [index: string]: string | false | (string)[] }
-		| ({
-				alias: string | false | (string)[];
+		| { [index: string]: string | false | string[] }
+		| {
+				alias: string | false | string[];
 				name: string;
 				onlyModule?: undefined | boolean;
-		  })[];
+		  }[];
 
 	/**
 	 * A list of alias fields in description files
 	 */
-	aliasFields?: undefined | (string | (string)[])[];
+	aliasFields?: undefined | (string | string[])[];
 
 	/**
 	 * A function which decides whether a request should be cached or not. An object is passed with at least `path` and `request` properties.
@@ -292,12 +293,12 @@ declare interface UserResolveOptions {
 	/**
 	 * A list of description files to read from
 	 */
-	descriptionFiles?: undefined | (string)[];
+	descriptionFiles?: undefined | string[];
 
 	/**
 	 * A list of exports field condition names.
 	 */
-	conditionNames?: undefined | (string)[];
+	conditionNames?: undefined | string[];
 
 	/**
 	 * Enforce that a extension from extensions must be used
@@ -307,12 +308,12 @@ declare interface UserResolveOptions {
 	/**
 	 * A list of exports fields in description files
 	 */
-	exportsFields?: undefined | (string | (string)[])[];
+	exportsFields?: undefined | (string | string[])[];
 
 	/**
 	 * A list of extensions which should be tried for files
 	 */
-	extensions?: undefined | (string)[];
+	extensions?: undefined | string[];
 
 	/**
 	 * The file system which should be used
@@ -337,7 +338,7 @@ declare interface UserResolveOptions {
 	/**
 	 * A list of directories to resolve modules from, can be absolute path or folder name
 	 */
-	modules?: undefined | string | (string)[];
+	modules?: undefined | string | string[];
 
 	/**
 	 * A list of main fields in description files
@@ -346,13 +347,14 @@ declare interface UserResolveOptions {
 		| undefined
 		| (
 				| string
-				| (string)[]
-				| { name: string | (string)[]; forceRelative: boolean })[];
+				| string[]
+				| { name: string | string[]; forceRelative: boolean }
+		  )[];
 
 	/**
 	 * A list of main files in directories
 	 */
-	mainFiles?: undefined | (string)[];
+	mainFiles?: undefined | string[];
 
 	/**
 	 * A list of additional resolve plugins which should be applied
@@ -361,7 +363,8 @@ declare interface UserResolveOptions {
 		| undefined
 		| (
 				| { apply: (arg0: Resolver) => void }
-				| ((this: Resolver, arg1: Resolver) => void))[];
+				| ((this: Resolver, arg1: Resolver) => void)
+		  )[];
 
 	/**
 	 * A PnP API that should be used - null is "never", undefined is "auto"
@@ -371,7 +374,7 @@ declare interface UserResolveOptions {
 	/**
 	 * A list of root paths
 	 */
-	roots?: undefined | (string)[];
+	roots?: undefined | string[];
 
 	/**
 	 * Resolve to a context instead of a file
